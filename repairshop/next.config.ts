@@ -1,8 +1,11 @@
 import {withSentryConfig} from "@sentry/nextjs";
-import type { NextConfig } from "next";
+// import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   /* config options here */
+  experimental: {
+    instrumentationHook: true,
+  },
 };
 
 export default withSentryConfig(nextConfig, {
@@ -23,7 +26,7 @@ export default withSentryConfig(nextConfig, {
 
   // Automatically annotate React components to show their full name in breadcrumbs and session replay
   reactComponentAnnotation: {
-  enabled: true,
+    enabled: true,
   },
 
   // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
