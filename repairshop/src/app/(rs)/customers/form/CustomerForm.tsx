@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { InputWithLabels } from "@/components/inputs/InputWithLabels";
 
 import { insertCustomerSchema, type insertCustomerSchemaType, type selectCustomerSchemaType } from "@/zod-schemas/customer";
 
@@ -45,8 +46,31 @@ export default function CustomerForm({ customer }: Props) {
             <Form {...form}>
                 <form
                     onSubmit = {form.handleSubmit(submitForm)}
-                    className="flex flex-col sm:flex-row gap-4 sm:gap-8"
+                    className="flex flex-col md:flex-row gap-4 md:gap-8"
                 >
+                    <div className="flex flex-col gap-4 w-full max-w-xs">
+                        <InputWithLabels<insertCustomerSchemaType>
+                            fieldTitle="First Name"
+                            nameInSchema="firstName"
+                            />
+                        <InputWithLabels<insertCustomerSchemaType>
+                            fieldTitle="Last Name"
+                            nameInSchema="lastName"
+                            />
+                        <InputWithLabels<insertCustomerSchemaType>
+                            fieldTitle="Address 1"
+                            nameInSchema="address1"
+                            />
+                        <InputWithLabels<insertCustomerSchemaType>
+                            fieldTitle="Address 2"
+                            nameInSchema="address2"
+                            />
+                        <InputWithLabels<insertCustomerSchemaType>
+                            fieldTitle="City"
+                            nameInSchema="city"
+                            />
+                    </div>
+
                     <p>
                         {JSON.stringify(form.getValues())}
                     </p>
