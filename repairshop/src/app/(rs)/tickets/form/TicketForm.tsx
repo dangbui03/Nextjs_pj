@@ -11,6 +11,7 @@ import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
 
 import { insertTicketSchema, type insertTicketSchemaType, type selectTicketSchemaType } from "@/zod-schemas/ticket";
 import { selectCustomerSchemaType } from "@/zod-schemas/customer";
+import { custom } from "zod";
 
 type Props = {
     customer: selectCustomerSchemaType,
@@ -57,7 +58,32 @@ export default function TicketForm({
                                 fieldTitle="Title"
                                 nameInSchema="title"
                                 />
+                            <InputWithLabels<insertTicketSchemaType>
+                                fieldTitle="Tech"
+                                nameInSchema="tech"
+                                readOnly={true}
+                                />
+
+                            {/* check box */}
+
+                            <div className="mt-4 space-y-2">
+                                <h3 className="text-lg">Customer Info</h3>
+                                <hr className="w=4/5" />
+                                <p>{customer.firstName} {customer.lastName}</p>
+                                <p>{customer.address1}</p>
+                                {customer.address2 ? <p>{customer.address2}</p>: null}
+                                <p>{customer.city}, {customer.state} {customer.zip}</p>
+                                <hr className="w-4/5"/>
+                                <p>{customer.email}</p>
+                                <p>Phone: {customer.phone}</p>
+                            </div>
+
                         </div>
+
+                        <div className="flex flex-col gap-4 w-full max-w-xs">
+                            
+                        </div>
+
                         {/* <p>
                             {JSON.stringify(form.getValues())}
                         </p> */}
