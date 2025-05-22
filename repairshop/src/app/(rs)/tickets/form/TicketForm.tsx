@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { InputWithLabels } from "@/components/inputs/InputWithLabel";
 import { TextAreaWithLabel } from "@/components/inputs/TextAreaWithLabel";
 import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
+import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
 
 import { insertTicketSchema, type insertTicketSchemaType, type selectTicketSchemaType } from "@/zod-schemas/ticket";
 import { selectCustomerSchemaType } from "@/zod-schemas/customer";
@@ -61,9 +62,13 @@ export default function TicketForm({
                             <InputWithLabels<insertTicketSchemaType>
                                 fieldTitle="Tech"
                                 nameInSchema="tech"
-                                readOnly={true}
+                                disabled={true}
                                 />
-
+                            <CheckboxWithLabel<insertTicketSchemaType>
+                                fieldTitle="Completed"
+                                nameInSchema="completed"
+                                message="Yes"
+                                />
                             {/* check box */}
 
                             <div className="mt-4 space-y-2">
@@ -81,7 +86,31 @@ export default function TicketForm({
                         </div>
 
                         <div className="flex flex-col gap-4 w-full max-w-xs">
-                            
+                            <TextAreaWithLabel<insertTicketSchemaType>
+                                fieldTitle="Description"
+                                nameInSchema="description"
+                                className="h-96"
+                                />
+
+                            <div className="flex gap-2">
+                                <Button
+                                    type="submit"
+                                    className="w-3/4"
+                                    variant="default"
+                                    title="Save"
+                                >
+                                    Save
+                                </Button>
+
+                                <Button
+                                    type="button"
+                                    variant="destructive"
+                                    title="Reset"
+                                    onClick={() => form.reset(defaultValues)}
+                                >
+                                    Reset    
+                                </Button>
+                            </div>
                         </div>
 
                         {/* <p>

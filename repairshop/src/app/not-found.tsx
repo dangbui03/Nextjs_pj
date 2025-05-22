@@ -1,4 +1,5 @@
-// import Link from 'next/link'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 
 export const metadata = {
@@ -21,6 +22,9 @@ export default function NotFound() {
                 priority = {true}
                 title='404 Not Found'
                 />
+            <Link href="/home">
+                <Button>Go back</Button>
+            </Link>
         </div>
     </div>
   )
