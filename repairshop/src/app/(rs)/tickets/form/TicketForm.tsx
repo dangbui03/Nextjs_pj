@@ -12,17 +12,20 @@ import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
 
 import { insertTicketSchema, type insertTicketSchemaType, type selectTicketSchemaType } from "@/zod-schemas/ticket";
 import { selectCustomerSchemaType } from "@/zod-schemas/customer";
-import { custom } from "zod";
+// import { custom } from "zod";
 
 type Props = {
     customer: selectCustomerSchemaType,
     ticket?: selectTicketSchemaType,
-
+    techs?: { id: string, description: string }[],
+    isEditable?: boolean,
 }
 
 export default function TicketForm({ 
-    customer, ticket 
+    customer, ticket, techs, isEditable = true
 }: Props) {
+    const isManager = Array.isArray(techs);
+
     const defaultValues: insertTicketSchemaType = {
         id: ticket?.id || "(New)",
         customerId: ticket?.customerId ?? customer.id,
@@ -46,7 +49,11 @@ export default function TicketForm({
             <div className="flex flex-col gap-1 sm:px-8">
                 <div>
                     <h2 className="text-2xl font-bold">
-                        {ticket?.id ? "Edit" : "New"} Ticket {ticket?.id ? `# ${ticket.id}` : "Form"} 
+                        {ticket?.id && isEditable ? 
+                            `Edit Ticket #${ticket.id}` 
+                            : ticket?.id    ? `View Ticket #${ticket.id}` 
+                                            : "New Ticket Form"
+                        }
                     </h2>
                 </div>
                 <Form {...form}>
@@ -58,17 +65,36 @@ export default function TicketForm({
                             <InputWithLabels<insertTicketSchemaType>
                                 fieldTitle="Title"
                                 nameInSchema="title"
+                                disabled={!isEditable}
                                 />
-                            <InputWithLabels<insertTicketSchemaType>
+                            {isManager ? (
+                                <SelectWithLabel<insertTicketSchemaType>
+                                    fieldTitle="Tech"
+                                    nameInSchema="tech"
+                                    data={[{ id: 'new-ticket@example.com', description: 
+                                        'new-ticket@example.com'}, ...techs]}
+                                    // disabled={!isEditable}
+                                    />
+                            ) : (
+                                <InputWithLabels<insertTicketSchemaType>
+                                    fieldTitle="Tech"
+                                    nameInSchema="tech"
+                                    disabled={true}
+                                    />
+                            )}
+                            {/* <InputWithLabels<insertTicketSchemaType>
                                 fieldTitle="Tech"
                                 nameInSchema="tech"
                                 disabled={true}
-                                />
-                            <CheckboxWithLabel<insertTicketSchemaType>
-                                fieldTitle="Completed"
-                                nameInSchema="completed"
-                                message="Yes"
-                                />
+                                /> */}
+                            {ticket?.id ? (
+                                <CheckboxWithLabel<insertTicketSchemaType>
+                                    fieldTitle="Completed"
+                                    nameInSchema="completed"
+                                    message="Yes"
+                                    disabled={!isEditable}
+                                    />
+                                ) : null}    
                             {/* check box */}
 
                             <div className="mt-4 space-y-2">
@@ -90,27 +116,31 @@ export default function TicketForm({
                                 fieldTitle="Description"
                                 nameInSchema="description"
                                 className="h-96"
+                                disabled={!isEditable}
                                 />
 
-                            <div className="flex gap-2">
-                                <Button
-                                    type="submit"
-                                    className="w-3/4"
-                                    variant="default"
-                                    title="Save"
-                                >
-                                    Save
-                                </Button>
+                            {isEditable ? (
+                                <div className="flex gap-2">
+                                    <Button
+                                        type="submit"
+                                        className="w-3/4"
+                                        variant="default"
+                                        title="Save"
+                                    >
+                                        Save
+                                    </Button>
 
-                                <Button
-                                    type="button"
-                                    variant="destructive"
-                                    title="Reset"
-                                    onClick={() => form.reset(defaultValues)}
-                                >
-                                    Reset    
-                                </Button>
-                            </div>
+                                    <Button
+                                        type="button"
+                                        variant="destructive"
+                                        title="Reset"
+                                        onClick={() => form.reset(defaultValues)}
+                                    >
+                                        Reset    
+                                    </Button>
+                                </div> 
+                            ) : null}
+                            
                         </div>
 
                         {/* <p>
