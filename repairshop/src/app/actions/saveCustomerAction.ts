@@ -1,6 +1,6 @@
 "use server"
 
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { flattenValidationErrors } from "next-safe-action";
 import { redirect } from "next/navigation";
 
@@ -26,9 +26,6 @@ export const saveCustomerAction = actionClient
         const isAuth = await isAuthenticated();
 
         if (!isAuth) redirect("/login"); 
-
-        const query = sql.raw(`SELECT * FROM Dang`);
-        const data = await db.execute(query);
 
         // New customer
         if (customer.id === 0) {

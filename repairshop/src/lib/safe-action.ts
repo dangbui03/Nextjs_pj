@@ -17,7 +17,7 @@ export const actionClient = createSafeActionClient({
             scope.setContext('clientInput', { clientInput} );
             return scope;
         });
-        if (error.constructor.name === 'DatabaseError') {
+        if (error.constructor.name === 'NeonDbError') {
             // safe things todo, not to leak data in database
             return "Database Error: Your data did not save. Please try again later.";
         }

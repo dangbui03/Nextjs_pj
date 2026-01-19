@@ -12,7 +12,12 @@ import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
 
 import { insertTicketSchema, type insertTicketSchemaType, type selectTicketSchemaType } from "@/zod-schemas/ticket";
 import { selectCustomerSchemaType } from "@/zod-schemas/customer";
-// import { custom } from "zod";
+
+import { useAction } from "next-safe-action/hooks";
+import { saveTicketAction } from "@/app/actions/saveTicketAction";
+import { toast } from "sonner";
+import { LoaderCircle } from "lucide-react";
+import { DisplayServerActionResponse } from "@/components/DisplayServerActionResponse";
 
 type Props = {
     customer: selectCustomerSchemaType,
@@ -25,6 +30,8 @@ export default function TicketForm({
     customer, ticket, techs, isEditable = true
 }: Props) {
     const isManager = Array.isArray(techs);
+
+    const { toast } = useToast();
 
     const defaultValues: insertTicketSchemaType = {
         id: ticket?.id || "(New)",
@@ -40,6 +47,24 @@ export default function TicketForm({
         resolver: zodResolver(insertTicketSchema),
         defaultValues,
     });
+
+    const {
+            execute: executeSave,
+            result: saveResult,
+            isExecuting: isSaving,
+            reset: resetSaveAction,
+        } = useAction(saveCustomerAction, {
+            onSuccess({ data }) {
+                toast.success("Success!!", {
+                    description: data?.message || "Customer saved successfully.",
+                })
+            },
+            onError({ error }) {
+                toast.error("Error!!", {
+                    description: error?.serverError || "Failed to save customer.",
+                })
+            }
+        });
 
     async function submitForm(data: insertTicketSchemaType){
             console.log(data);
