@@ -31,8 +31,6 @@ export default function TicketForm({
 }: Props) {
     const isManager = Array.isArray(techs);
 
-    const { toast } = useToast();
-
     const defaultValues: insertTicketSchemaType = {
         id: ticket?.id || "(New)",
         customerId: ticket?.customerId ?? customer.id,
@@ -49,33 +47,37 @@ export default function TicketForm({
     });
 
     const {
-            execute: executeSave,
-            result: saveResult,
-            isExecuting: isSaving,
-            reset: resetSaveAction,
-        } = useAction(saveCustomerAction, {
-            onSuccess({ data }) {
+        execute: executeSave,
+        result: saveResult,
+        isPending: isSaving,
+        reset: resetSaveAction,
+    } = useAction(saveTicketAction, {
+        onSuccess({ data }) {
+            if (data?.message) {
                 toast.success("Success!!", {
-                    description: data?.message || "Customer saved successfully.",
-                })
-            },
-            onError({ error }) {
-                toast.error("Error!!", {
-                    description: error?.serverError || "Failed to save customer.",
+                    description: data?.message || "Ticket saved successfully.",
                 })
             }
-        });
+        },
+        onError({ error }) {
+            toast.error("Error!!", {
+                description: error?.serverError || "Failed to save ticket.",
+            })
+        }
+    });
 
     async function submitForm(data: insertTicketSchemaType){
-            console.log(data);
+            // console.log(data);
+            executeSave(data);
         };
     
         return (
             <div className="flex flex-col gap-1 sm:px-8">
+                <DisplayServerActionResponse result={saveResult} />
                 <div>
                     <h2 className="text-2xl font-bold">
                         {ticket?.id && isEditable ? 
-                            `Edit Ticket #${ticket.id}` 
+                            `Edit Ticket # ${ticket.id}` 
                             : ticket?.id    ? `View Ticket #${ticket.id}` 
                                             : "New Ticket Form"
                         }
@@ -151,15 +153,25 @@ export default function TicketForm({
                                         className="w-3/4"
                                         variant="default"
                                         title="Save"
+                                        disabled={isSaving}
                                     >
-                                        Save
+                                        {isSaving ? (
+                                            <>
+                                                <LoaderCircle className="animate-spin" /> Saving...
+                                            </>
+                                        ) : (
+                                            "Save"
+                                        )}
                                     </Button>
 
                                     <Button
                                         type="button"
                                         variant="destructive"
                                         title="Reset"
-                                        onClick={() => form.reset(defaultValues)}
+                                        onClick={() => {
+                                            form.reset(defaultValues)
+                                            resetSaveAction();
+                                        }} 
                                     >
                                         Reset    
                                     </Button>

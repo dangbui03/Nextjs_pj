@@ -27,7 +27,7 @@ export const saveTicketAction = actionClient
 
         if (!isAuth) redirect("/login"); 
 
-        // New customer
+        // New ticket
         if (ticket.id === '(New)') {
             const result = await db.insert(tickets).values({
                 customerId: ticket.customerId,
@@ -48,7 +48,7 @@ export const saveTicketAction = actionClient
                 completed: ticket.completed,
                 tech: ticket.tech,
             })
-            .where(eq(tickets.id, ticket.id))
+            .where(eq(tickets.id, ticket.id!))
             .returning({ updatedId: tickets.id });
 
         return { message: `Ticket ID #${result[0].updatedId} updated successfully.` };
