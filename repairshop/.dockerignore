@@ -1,0 +1,12 @@
+.env.local
+.env.production
+.git
+.gitignore
+.next
+node_modules
+npm-debug.log*
+Dockerfile*
+docker-compose*
+README.md
+tsconfig.tsbuildinfo
+sentry-wizard-installation-error-*.log
