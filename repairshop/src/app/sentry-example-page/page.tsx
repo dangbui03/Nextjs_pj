@@ -79,8 +79,27 @@
 // }
 
 
-"use client"
+"use client";
+
+import * as Sentry from "@sentry/nextjs";
 
 export default function Page() {
-  throw new Error("Sentry Example Frontend Error");
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-6 text-center">
+      <h1 className="text-3xl font-semibold">Sentry Example Page</h1>
+      <p className="max-w-xl text-sm text-muted-foreground">
+        Use this page to trigger a sample client-side error without breaking the production build.
+      </p>
+      <button
+        type="button"
+        className="rounded-md bg-foreground px-4 py-2 text-background"
+        onClick={() => {
+          Sentry.captureException(new Error("Sentry Example Frontend Error"));
+          throw new Error("Sentry Example Frontend Error");
+        }}
+      >
+        Throw sample error
+      </button>
+    </main>
+  );
 }
