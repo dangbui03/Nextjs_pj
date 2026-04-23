@@ -1,0 +1,65 @@
+# Vercel Speed Insights Configuration
+
+## Summary
+Configured Vercel Speed Insights for this Next.js App Router project following the latest official documentation from https://vercel.com/docs/speed-insights/quickstart.
+
+## Status
+The `@vercel/speed-insights` package (v2.0.0) was already installed in this project, and the SpeedInsights component was already imported. However, the component placement was incorrect.
+
+## Changes Made
+
+### Modified Files:
+- **src/app/layout.tsx** - Fixed SpeedInsights component placement
+
+### Specific Changes:
+1. **Fixed Component Placement**: Moved the `<SpeedInsights />` component from outside the `<html>` tag (wrapped in a React Fragment) to inside the `<body>` tag, following the official Vercel documentation guidelines.
+
+### Before:
+```tsx
+return (
+  <>
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        {/* content */}
+      </body>
+    </html>
+    <Analytics />
+    <SpeedInsights />
+  </>
+);
+```
+
+### After:
+```tsx
+return (
+  <html lang="en" suppressHydrationWarning>
+    <body>
+      {/* content */}
+      <Analytics />
+      <SpeedInsights />
+    </body>
+  </html>
+);
+```
+
+## Implementation Details
+- Package: `@vercel/speed-insights` v2.0.0 (already installed)
+- Import: `import { SpeedInsights } from '@vercel/speed-insights/next'` (already present)
+- Component: `<SpeedInsights />` now correctly placed inside the `<body>` tag per Next.js App Router best practices
+
+## Verification
+- ✅ TypeScript compilation successful (verified during build process)
+- ✅ No new linting errors introduced
+- ✅ Component correctly placed according to official documentation
+- ✅ Code structure and existing imports preserved
+
+## Next Steps
+To complete the Speed Insights setup:
+1. Enable Speed Insights in the Vercel dashboard for this project
+2. Deploy the application to Vercel
+3. Monitor performance data in the Vercel dashboard after user visits accumulate
+
+## Notes
+- The build process failed due to missing environment variables (KINDE_ISSUER_URL), which is expected for local development and unrelated to the Speed Insights configuration.
+- Pre-existing linting errors in other files (CustomerTable.tsx and tailwind.config.ts) are unrelated to this change.
+- The project uses npm as its package manager (package-lock.json present).
