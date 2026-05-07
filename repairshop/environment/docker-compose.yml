@@ -1,0 +1,31 @@
+services:
+  repairshop:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_VERSION: ${NODE_VERSION:-20.19.5}
+    image: repairshop-vps:latest
+    container_name: repairshop
+    restart: unless-stopped
+    working_dir: /var/www/app
+    command: ["/usr/local/bin/start-repairshop"]
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    env_file:
+      - path: ../.env.production
+        required: false
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: "1"
+      PORT: "3000"
+      RUN_MIGRATIONS: ${RUN_MIGRATIONS:-1}
+      REBUILD_ON_START: ${REBUILD_ON_START:-1}
+    volumes:
+      - ../:/var/www/app
+      - repairshop_node_modules:/var/www/app/node_modules
+      - repairshop_next:/var/www/app/.next
+
+volumes:
+  repairshop_node_modules:
+  repairshop_next:
