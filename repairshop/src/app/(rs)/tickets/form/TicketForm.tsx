@@ -37,7 +37,7 @@ export default function TicketForm({
         title: ticket?.title || "",
         description: ticket?.description || "",
         completed: ticket?.completed || false,
-        tech: ticket?.tech || "new-ticket@example.com",
+        tech: ticket?.tech?.toLowerCase() || "new-ticket@example.com",
     }
 
     const form = useForm<insertTicketSchemaType>({
@@ -96,7 +96,7 @@ export default function TicketForm({
                                 />
                             {isManager ? (
                                 <SelectWithLabel<insertTicketSchemaType>
-                                    fieldTitle="Tech"
+                                    fieldTitle="Tech ID"
                                     nameInSchema="tech"
                                     data={[{ id: 'new-ticket@example.com', description: 
                                         'new-ticket@example.com'}, ...techs]}
@@ -104,7 +104,7 @@ export default function TicketForm({
                                     />
                             ) : (
                                 <InputWithLabels<insertTicketSchemaType>
-                                    fieldTitle="Tech"
+                                    fieldTitle="Tech ID"
                                     nameInSchema="tech"
                                     disabled={true}
                                     />
