@@ -45,7 +45,9 @@ export default function RootLayout({
           {children}
           <Toaster />
         </ThemeProvider>
-        <Analytics debug={false} />
+
+        {/* Vercel Analytics and Speed Insights */}
+        <Analytics />
         <SpeedInsights />
       </body>
     </html>

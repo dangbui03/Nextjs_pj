@@ -15,7 +15,7 @@ export async function getOpenTickets() {
     })
         .from(tickets)
         .leftJoin(customers, eq(tickets.customerId, customers.id))
-        .where(eq(tickets.completed, false))
+        // .where(eq(tickets.completed, false))
         .orderBy(asc(tickets.createdAt));
     
     return results;
