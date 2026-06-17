@@ -13,6 +13,8 @@ services:
     ports:
       - "${APP_PORT:-3000}:3000"
     env_file:
+      - path: .env
+        required: false
       - path: ../.env.production
         required: false
     environment:
@@ -21,6 +23,9 @@ services:
       PORT: "3000"
       RUN_MIGRATIONS: ${RUN_MIGRATIONS:-1}
       REBUILD_ON_START: ${REBUILD_ON_START:-1}
+      KINDE_SITE_URL: ${APP_URL:-http://localhost:3000}
+      KINDE_POST_LOGOUT_REDIRECT_URL: ${APP_URL:-http://localhost:3000}/login
+      KINDE_POST_LOGIN_REDIRECT_URL: ${APP_URL:-http://localhost:3000}/home
     volumes:
       - ../:/var/www/app
       - repairshop_node_modules:/var/www/app/node_modules
